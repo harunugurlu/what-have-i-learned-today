@@ -1,0 +1,101 @@
+---
+description: Roadmap on how to implement the app
+globs: 
+alwaysApply: false
+---
+This is a roadmap for how to implement the application. You will use this roadmap to implement the application.
+
+Each step includes a reminder to **stop and await approval** before proceeding and you should ALWAYS obey this. Also ALWAYS follow [project-rules.mdc](mdc:.cursor/rules/project-rules.mdc)
+
+---
+
+## **Project Guidelines**
+1. **ALWAYS stop after completing a step and wait for the user’s approval before proceeding to the next step.**  
+2. **ALWAYS obey the rules in `project-rules.mdc` file.**
+
+---
+
+## **Roadmap**
+
+### **Step 1: Create the Data Model**
+1. Define a base interface **`Entity`** with:
+   - `id` (UUID)
+   - `createdAt` (date/time)
+   - `updatedAt` (date/time)
+2. For all other data entities, extend from **`Entity`**:
+   - **`User`**: { `username`, `email`, `streak` }
+   - **`LearningLog`**: { `userId`, `title`, `details`, `colorId` }
+   - **`Color`**: { `name`, `hexCode` }
+   - **`Tag`**: { `name` }
+   - **`LearningLogTag`**: { `tagId`, `learningLogId` } — Many-to-many relationship between `Tag` and `LearningLog`.
+
+**Stop here and wait for approval before continuing to Step 2.**
+
+---
+
+### **Step 2: Add Supabase to the Project (Including Authentication)**
+1. Initialize a new Next.js + TypeScript project (using React under the hood).
+2. Set up **Supabase**:
+   - Connect to a Supabase project.
+   - Create tables matching the data model from Step 1 (or use Supabase’s migrations/tooling).
+3. Configure **Google Sign-In** and any other desired auth methods.
+
+**Stop here and wait for approval before continuing to Step 3.**
+
+---
+
+### **Step 3: Implement Basic Authentication Flow**
+1. In Next.js, integrate Supabase’s auth methods (Google provider).
+2. Ensure that when a user signs in, an entry in the **`User`** table is created or updated.
+3. Set up protected routes or server-side checks to restrict features to authenticated users.
+
+**Stop here and wait for approval before continuing to Step 4.**
+
+---
+
+### **Step 4: UI & Design (Global)**
+1. Implement a **light + dark theme**:
+   - Basic color palette for both themes.
+   - Theme toggle or automatic detection based on user/device preference.
+2. Use a **modern & minimal design** approach (simple fonts, clean layout, minimal clutter).
+3. Configure global headers, footers, and any shared components.
+
+**Stop here and wait for approval before continuing to Step 5.**
+
+---
+
+### **Step 5: Main Page – Calendar Layout**
+1. Create the main page with a **calendar** interface (similar to Google Calendar).
+2. At the **top-right corner**, add a small user profile section showing:
+   - The user’s **username**
+   - The **streak** status
+3. Make future days **non-clickable**; only allow the current day and past days to be clicked.
+
+**Stop here and wait for approval before continuing to Step 6.**
+
+---
+
+### **Step 6: Adding New Learning Log (Modal)**
+1. When a user clicks on a valid date in the calendar:
+   - Show a **modal** (popup) with:
+     - **Title** input
+     - **Tags** input (or multi-select)
+     - **Markdown editor** for the detailed learning content
+     - **Color picker** (some pastel colors)
+2. When the user confirms (“Add” button):
+   - Create a new record in **`LearningLog`** (and any tag relations in **`LearningLogTag`**).
+   - Display the new log in the calendar immediately.
+
+**Stop here and wait for approval before continuing to Step 7.**
+
+---
+
+### **Step 7: Learning Log Components & Display**
+1. Each **learning log** on the calendar appears as a slightly rounded block, with the chosen **pastel color** as the background.
+2. Inside each block:
+   - Show the **Title**.
+   - Show the **Tags** below the title.
+3. When a user **clicks** a learning log block:
+   - Smoothly open a **popup** or modal showing the details (including the full markdown content).
+
+**Stop here and wait for approval before continuing to any further steps.**
