@@ -26,7 +26,7 @@ interface UserProviderProps {
 
 export function UserProvider({ initialUser, children }: UserProviderProps) {
   const [user, setUser] = useState<User | null>(initialUser)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading] = useState(false)
 
   useEffect(() => {
     // Update the user state when initialUser changes

@@ -1,6 +1,5 @@
 import { createClient } from '@/utils/supabase/server'
 import { User } from '@/lib/domains'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 /**

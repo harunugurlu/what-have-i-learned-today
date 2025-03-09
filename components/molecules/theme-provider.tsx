@@ -56,7 +56,7 @@ export function ThemeProvider({
       root.classList.add('disable-transitions')
       
       // Force a reflow
-      const _ = window.getComputedStyle(root).opacity
+      window.getComputedStyle(root).opacity
       
       // Remove the class after a short delay
       const timeout = setTimeout(() => {
