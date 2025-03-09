@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 
   if (code) {
     const cookieStore = cookies()
-    const supabase = createClient()
+    const supabase = await createClient()
 
     // Exchange the code for a session
     const { error } = await supabase.auth.exchangeCodeForSession(code)
@@ -35,12 +35,16 @@ export async function GET(request: Request) {
       
       // If user doesn't exist, create a new user record
       if (!existingUser) {
+        // Get username from user metadata if available (for email/password signup)
+        // or from email if not (for OAuth)
+        const username = user.user_metadata?.username || user.email?.split('@')[0] || `user_${Math.floor(Math.random() * 10000)}`
+        
         const { error: insertError } = await supabase
           .from('users')
           .insert({
             id: user.id,
             email: user.email,
-            username: user.email?.split('@')[0] || `user_${Math.floor(Math.random() * 10000)}`,
+            username,
             streak: 0,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()

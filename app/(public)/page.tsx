@@ -28,6 +28,9 @@ export default async function HomePage() {
             <Link href="/login">
               <Button variant="ghost">Login</Button>
             </Link>
+            <Link href="/signup">
+              <Button>Sign Up</Button>
+            </Link>
           </nav>
         </div>
       </header>
@@ -42,9 +45,14 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="flex gap-4">
-            <Link href="/login">
+            <Link href="/signup">
               <Button size="lg" className="gap-2">
                 Get Started <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/login">
+              <Button size="lg" variant="outline">
+                Sign In
               </Button>
             </Link>
           </div>

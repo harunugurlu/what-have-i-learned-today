@@ -59,7 +59,7 @@ Set up Supabase integration with the Next.js project, including authentication f
 ## Step 3: Implement Basic Authentication Flow
 
 ### Summary
-Enhanced the authentication flow by adding reusable components, context providers, and utility functions to manage user authentication and profile data.
+Enhanced the authentication flow by adding reusable components, context providers, utility functions, and email/password authentication.
 
 ### Completed
 - Fixed linter errors in the authentication flow by properly awaiting the Supabase client creation
@@ -74,6 +74,13 @@ Enhanced the authentication flow by adding reusable components, context provider
   - Protected layout now uses the `UserProvider` to provide user data to all child components
   - Dashboard layout now uses the `UserProfile` component for consistent user display
   - Dashboard page now uses the `getCurrentUser` function to get user data
+- Implemented email/password authentication:
+  - Created a signup page with email, username, and password fields
+  - Updated the login page to include email/password login
+  - Created a forgot password page for password recovery
+  - Created a reset password page for setting a new password
+  - Updated the auth callback route to handle both Google OAuth and email/password signup
+  - Updated the public home page to include links to both login and signup pages
 
 ### Next Steps
 - Proceed to Step 4: UI & Design (Global)
