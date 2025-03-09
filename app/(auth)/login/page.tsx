@@ -1,204 +1,119 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+import { createClient } from '@/utils/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { createClient } from '@/utils/supabase/client'
-import { ArrowRight } from 'lucide-react'
-import Image from 'next/image'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  })
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
 
   useEffect(() => {
-    // Check for success message in URL
-    const message = searchParams.get('message')
-    if (message) {
-      setMessage(message)
+    // Check for error or message in URL params
+    const errorParam = searchParams.get('error')
+    const messageParam = searchParams.get('message')
+    
+    if (errorParam) {
+      setError(decodeURIComponent(errorParam))
     }
-
-    // Check for error in URL
-    const error = searchParams.get('error')
-    if (error) {
-      setError(error)
+    
+    if (messageParam) {
+      setMessage(decodeURIComponent(messageParam))
     }
   }, [searchParams])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
     setError(null)
 
-    // Validate form
-    if (!formData.email || !formData.password) {
-      setError('Email and password are required')
-      return
-    }
-
     try {
-      setIsLoading(true)
-
-      // Sign in with email and password
-      const { error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       })
 
-      if (error) {
-        throw error
+      if (signInError) {
+        throw signInError
       }
 
-      // Redirect to dashboard
-      router.push('/dashboard')
+      // Redirect to home page after successful login
+      router.push('/')
       router.refresh()
     } catch (error: any) {
-      console.error('Error signing in with email:', error)
+      console.error('Error during login:', error)
       setError(error.message || 'An error occurred during login')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleGoogleSignIn = async () => {
-    try {
-      setIsLoading(true)
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      })
-
-      if (error) {
-        throw error
-      }
-    } catch (error: any) {
-      console.error('Error signing in with Google:', error)
-      setError(error.message || 'An error occurred during Google sign-in')
-    } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <div className="flex justify-center">
-            <Image
-              src="/logo.svg"
-              alt="What Have I Learned Today Logo"
-              width={64}
-              height={64}
-              className="mb-4"
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <div className="w-full max-w-md p-6 space-y-6 bg-card rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold text-center">Log In</h1>
+        
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        
+        {message && (
+          <Alert>
+            <AlertDescription>{message}</AlertDescription>
+          </Alert>
+        )}
+        
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="john@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
-          <CardTitle className="text-center text-2xl font-bold">Welcome Back</CardTitle>
-          <CardDescription className="text-center">
-            Sign in to track your daily learning journey
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleEmailLogin}>
-          <CardContent className="grid gap-4">
-            {error && (
-              <div className="rounded-md bg-red-50 p-3 text-sm text-red-500 dark:bg-red-900/30 dark:text-red-200">
-                {error}
-              </div>
-            )}
-            {message && (
-              <div className="rounded-md bg-green-50 p-3 text-sm text-green-500 dark:bg-green-900/30 dark:text-green-200">
-                {message}
-              </div>
-            )}
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="your.email@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="hover:cursor-text"
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs font-medium text-primary underline underline-offset-4 hover:cursor-pointer"
-                >
-                  Forgot password?
-                </Link>
-              </div>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className="hover:cursor-text"
-              />
-            </div>
-            <Button 
-              type="submit" 
-              className="w-full bg-indigo-600 text-white font-medium shadow-sm hover:bg-indigo-500 hover:cursor-pointer transition-colors"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Signing In...' : 'Sign In with Email'}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            <div className="relative flex items-center justify-center">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <span className="relative bg-card px-2 text-xs uppercase text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-            <Button
-              variant="outline"
-              type="button"
-              onClick={handleGoogleSignIn}
-              disabled={isLoading}
-              className="flex items-center justify-center gap-2 hover:cursor-pointer border border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              <Image src="/google-logo.svg" alt="Google Logo" width={20} height={20} />
-              Sign in with Google
-            </Button>
-          </CardContent>
+          
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Log In'}
+          </Button>
         </form>
-        <CardFooter className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground">
-          <p>By signing in, you agree to our Terms of Service and Privacy Policy.</p>
-          <p>
-            Don't have an account?{' '}
-            <Link href="/signup" className="font-medium text-primary underline underline-offset-4 hover:cursor-pointer">
-              Sign up
-            </Link>
-          </p>
-        </CardFooter>
-      </Card>
+        
+        <div className="text-center text-sm">
+          Don&apos;t have an account?{' '}
+          <Link href="/signup" className="font-medium text-primary hover:underline">
+            Sign up
+          </Link>
+        </div>
+      </div>
     </div>
   )
 } 
