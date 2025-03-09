@@ -120,7 +120,7 @@ export default function ResetPasswordPage() {
             </div>
             <Button 
               type="submit" 
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 hover:cursor-pointer" 
+              className="w-full bg-indigo-600 text-white font-medium shadow-sm hover:bg-indigo-500 hover:cursor-pointer transition-colors" 
               disabled={isLoading}
             >
               {isLoading ? 'Resetting Password...' : 'Reset Password'}
