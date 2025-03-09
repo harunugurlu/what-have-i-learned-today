@@ -277,3 +277,97 @@ We have implemented a modal interface for adding new learning logs when a user c
 
 #### Questions
 None at this time.
+
+### **Step 7: Learning Log Components & Display**
+
+#### Summary of Development
+We have implemented the learning log display functionality, allowing users to view the details of their learning logs when they click on an existing log in the calendar. The implementation includes a modal dialog that displays the log's title, details, metadata, and tags, with proper markdown rendering for the content.
+
+#### What is Completed So Far
+1. Created server actions for learning log operations:
+   - `getLearningLogById`: Fetches a single learning log with all its details
+   - Enhanced the existing actions with better type safety and error handling
+
+2. Implemented a LearningLogDetails component:
+   - Displays the learning log title, details, date, time, color, and tags
+   - Renders markdown content using react-markdown
+   - Provides a clean and organized layout for the information
+   - Handles loading states and errors gracefully
+
+3. Enhanced the Calendar component:
+   - Added functionality to handle clicks on existing learning logs
+   - Improved the visual feedback when hovering over logs
+   - Fixed event propagation to distinguish between clicking on a day vs. a log
+   - Added a new prop to pass the selected log ID to the parent component
+
+4. Updated the main page to:
+   - Handle viewing learning log details
+   - Fetch learning log details when a log is selected
+   - Manage state for the details dialog
+   - Provide proper loading and error states
+
+5. Added markdown support:
+   - Installed react-markdown for rendering markdown content
+   - Added the Tailwind typography plugin for better markdown styling
+   - Configured the typography plugin in the Tailwind config
+
+#### Next Steps
+1. Implement editing functionality for learning logs
+2. Add delete functionality for learning logs
+3. Enhance the markdown editor with a preview
+4. Implement filtering and searching for learning logs
+5. Add pagination for better performance with many logs
+
+#### Known Issues
+1. The markdown rendering might need additional styling for better readability
+2. The details dialog might need adjustments for mobile responsiveness
+3. The calendar layout could be improved for better display of multiple logs on the same day
+
+#### Questions
+None at this time.
+
+### **Step 8: Learning Log Editing & Deletion**
+
+#### Summary of Development
+We have implemented the editing and deletion functionality for learning logs, allowing users to modify or remove their existing entries. The implementation includes a dedicated edit dialog that reuses much of the form logic from the creation dialog, as well as a delete button with proper confirmation and error handling.
+
+#### What is Completed So Far
+1. Created server actions for learning log operations:
+   - `updateLearningLog`: Updates an existing learning log with new data
+   - `deleteLearningLog`: Deletes a learning log and its associated tag relationships
+
+2. Implemented a LearningLogEdit component:
+   - Reuses the form structure from the LearningLogDialog component
+   - Pre-populates the form with the existing learning log data
+   - Handles form submission and validation
+   - Provides proper loading states and error handling
+   - Includes a delete button for removing the learning log
+
+3. Enhanced the LearningLogDetails component:
+   - Added an edit button that opens the edit dialog
+   - Improved the layout and styling of the details view
+   - Added proper state management for the edit dialog
+
+4. Updated the main page to:
+   - Handle deleting learning logs
+   - Refresh the data after a learning log is deleted
+   - Provide proper error handling for delete operations
+
+5. Added safety features:
+   - Implemented a confirmation dialog for deleting learning logs
+   - Used shadcn's AlertDialog component for the confirmation UI
+   - Added clear warning messages about the permanent nature of deletion
+   - Ensured the dialog closes properly after actions are taken
+
+#### Next Steps
+1. Enhance the markdown editor with a preview
+2. Implement filtering and searching for learning logs
+3. Add pagination for better performance with many logs
+4. Improve the UI for mobile devices
+
+#### Known Issues
+1. The edit dialog might need adjustments for mobile responsiveness
+2. The form validation could be improved with more specific error messages
+
+#### Questions
+None at this time.

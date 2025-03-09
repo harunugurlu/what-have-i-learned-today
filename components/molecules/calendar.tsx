@@ -19,6 +19,7 @@ import {
 
 interface CalendarProps {
   onSelectDate: (date: Date) => void
+  onSelectLearningLog: (id: string) => void
   learningLogs?: {
     id: string
     date: Date
@@ -28,7 +29,7 @@ interface CalendarProps {
   }[]
 }
 
-export function Calendar({ onSelectDate, learningLogs = [] }: CalendarProps) {
+export function Calendar({ onSelectDate, onSelectLearningLog, learningLogs = [] }: CalendarProps) {
   const today = new Date()
   const [currentWeek, setCurrentWeek] = useState(today)
 
@@ -95,7 +96,7 @@ export function Calendar({ onSelectDate, learningLogs = [] }: CalendarProps) {
             </div>
             <div className="mt-1">
               {isSameDay(date, today) ? (
-                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-700 text-white font-bold">
+                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold">
                   {format(date, 'd')}
                 </div>
               ) : (
@@ -120,7 +121,12 @@ export function Calendar({ onSelectDate, learningLogs = [] }: CalendarProps) {
                 ${index !== 0 ? 'border-l border-gray-200 dark:border-gray-700' : ''}
                 ${!isFutureDay ? 'hover:bg-muted/50 transition-colors' : 'opacity-50'}
               `}
-              onClick={() => !isFutureDay && onSelectDate(date)}
+              onClick={(e) => {
+                // Only trigger if clicking directly on the day column (not on a learning log)
+                if (e.currentTarget === e.target && !isFutureDay) {
+                  onSelectDate(date)
+                }
+              }}
               style={{ cursor: isFutureDay ? 'not-allowed' : 'pointer' }}
             >
               {/* Learning logs for this day */}
@@ -128,12 +134,11 @@ export function Calendar({ onSelectDate, learningLogs = [] }: CalendarProps) {
                 {logsForDay.map(log => (
                   <div
                     key={log.id}
-                    className="p-4 rounded-md text-sm shadow-sm"
+                    className="p-4 rounded-md text-sm shadow-sm hover:shadow-md transition-shadow"
                     style={{ backgroundColor: log.colorHex + '33' }}
                     onClick={(e) => {
                       e.stopPropagation() // Prevent triggering the parent onClick
-                      // This will be handled in a future step for viewing log details
-                      console.log('View log details:', log)
+                      onSelectLearningLog(log.id)
                     }}
                   >
                     <div className="font-medium">{log.title}</div>
