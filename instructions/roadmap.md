@@ -159,3 +159,68 @@ Fixed various UI and functionality issues before proceeding with Step 5.
 
 ### Questions
 - None at this time
+
+### **Step 5: Main Page – Calendar Layout**
+
+#### Summary of Development
+We have implemented the main page with a weekly calendar interface. The calendar displays the current week with each day as a column, showing the date range (e.g., "March 10–17, 2025") as the title. The current day is highlighted, and future days are disabled to prevent users from adding entries for future dates.
+
+We've also added a user profile section in the top-right corner that displays the user's username and streak status. The calendar is designed to show learning logs within each day column, and the entire day column is clickable for adding new learning logs.
+
+#### What is Completed So Far
+1. Created a reusable Calendar component that:
+   - Displays a weekly calendar view with days as columns
+   - Allows navigation between weeks
+   - Highlights the current day
+   - Disables future days
+   - Shows learning logs within each day column
+   - Makes the entire day column clickable for adding new logs
+   - Displays a plus icon on hover for empty days
+
+2. Added a user profile section in the top-right corner showing:
+   - The user's username
+   - The current streak status
+
+3. Updated the main page to:
+   - Fetch and display the user's profile information
+   - Fetch learning logs from the database
+   - Display the calendar with learning logs
+   - Show streak information and recent tags
+
+4. Fixed an issue with event handlers:
+   - Converted the main page from a Server Component to a Client Component
+   - Updated the data fetching approach to work in a Client Component
+   - Properly transformed the user data to match the expected User interface
+
+5. Redesigned the calendar layout:
+   - Changed from monthly to weekly view
+   - Made each day a column with sufficient width for content
+   - Made day columns clickable for adding new learning logs
+   - Added visual feedback when hovering over days
+   - Improved the display of learning logs within days
+
+6. Further improved the calendar design:
+   - Made the calendar larger and more prominent on the page (80% of the width)
+   - Redesigned day columns to have continuous vertical borders
+   - Removed gaps between columns for a more cohesive look
+   - Added subtle background highlighting for the current day
+   - Increased the height of day columns for better content display
+   - Added shadows to learning log cards for better visual hierarchy
+   - Improved spacing and padding throughout the calendar
+   - Used faded gray color for vertical borders between columns
+   - Removed top and bottom borders for a cleaner look
+   - Enhanced the user profile section with a more distinct and visually appealing design
+
+#### Next Steps
+1. Implement the modal for adding new learning logs when a user clicks on a valid date (Step 6)
+2. Create the learning log detail view when a user clicks on an existing log
+3. Implement proper error handling for data fetching
+4. Add loading states for better user experience
+
+#### Known Issues
+1. The calendar layout might need adjustments for mobile responsiveness
+2. The data fetching could be optimized to reduce the number of database queries
+3. Type safety could be improved for the Supabase query results
+
+#### Questions
+None at this time.
