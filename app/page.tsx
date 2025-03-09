@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react'
 import { Calendar } from '@/components/molecules/calendar'
 import { UserProfile } from '@/components/molecules/user-profile'
+import { LearningLogDialog } from '@/components/molecules/learning-log-dialog'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { User } from '@/lib/domains'
+import { getLearningLogs } from '@/lib/actions'
 
 interface FormattedLearningLog {
   id: string
@@ -21,12 +23,14 @@ export default function Home() {
   const [userProfile, setUserProfile] = useState<User | null>(null)
   const [learningLogs, setLearningLogs] = useState<FormattedLearningLog[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true)
-      const supabase = createClient()
-      
+  const fetchData = async () => {
+    setIsLoading(true)
+    const supabase = createClient()
+    
+    try {
       // Get the current user
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -42,38 +46,8 @@ export default function Home() {
         .eq('id', user.id)
         .single()
       
-      // Get learning logs for the current user
-      const { data: learningLogsData } = await supabase
-        .from('learning_logs')
-        .select(`
-          id,
-          title,
-          details,
-          created_at,
-          color_id,
-          colors (
-            hex_code
-          ),
-          learning_log_tags (
-            tags (
-              name
-            )
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-      
-      // Transform the data for the calendar
-      const formattedLogs = (learningLogsData || []).map((log: any) => {
-        return {
-          id: log.id,
-          date: new Date(log.created_at),
-          title: log.title,
-          details: log.details,
-          colorHex: log.colors?.[0]?.hex_code || '#3B82F6',
-          tags: log.learning_log_tags?.map((tag: any) => tag.tags?.[0]?.name).filter(Boolean) || []
-        }
-      })
+      // Get learning logs using the server action
+      const learningLogsData = await getLearningLogs()
       
       // Transform the user data to match the User interface
       const transformedUserProfile = userProfileData ? {
@@ -86,16 +60,26 @@ export default function Home() {
       } : null
       
       setUserProfile(transformedUserProfile)
-      setLearningLogs(formattedLogs)
+      setLearningLogs(learningLogsData)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
       setIsLoading(false)
     }
-    
+  }
+  
+  useEffect(() => {
     fetchData()
   }, [router])
   
   const handleSelectDate = (date: Date) => {
-    console.log('Selected date:', date)
-    // This will be implemented in the next step
+    setSelectedDate(date)
+    setIsModalOpen(true)
+  }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+    setSelectedDate(null)
   }
 
   if (isLoading) {
@@ -153,6 +137,15 @@ export default function Home() {
           </div>
         </div>
       </div>
+      
+      {/* Learning Log Dialog */}
+      {selectedDate && (
+        <LearningLogDialog
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          date={selectedDate}
+        />
+      )}
     </div>
   )
 }

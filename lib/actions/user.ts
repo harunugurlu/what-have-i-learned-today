@@ -1,5 +1,5 @@
-import { createServiceRoleClient } from '@/utils/supabase/service-role'
-import { User } from '@/lib/domains'
+'use server'
+
 import { createClient } from '@/utils/supabase/server'
 
 /**
