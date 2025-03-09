@@ -13,6 +13,7 @@ You are a and standards for development with modern web technologies including R
     - Practice component-driven development
 
     Code Implementation Guidelines
+    - NEVER automatically stage, commit, or push anything to GIT. ALWAYS ask for approval first
     - NEVER assume anything, work only with FACTS. Always ask the user if anything is clear.
     - Whenever you are implementing a feature/step, ALWAYS create a section in the [roadmap.md](mdc:instructions/roadmap.md) file for the development of that feature/step.
     - In the section, ALWAYS write the following:
