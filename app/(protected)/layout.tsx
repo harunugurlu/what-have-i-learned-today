@@ -1,4 +1,5 @@
-import { createClient } from '@/utils/supabase/server'
+import { getCurrentUser } from '@/lib/actions'
+import { UserProvider } from '@/components/molecules'
 import { redirect } from 'next/navigation'
 
 export default async function ProtectedLayout({
@@ -6,19 +7,18 @@ export default async function ProtectedLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = createClient()
+  const user = await getCurrentUser()
 
-  // Check if the user is authenticated
-  const { data: { user }, error } = await supabase.auth.getUser()
-
-  if (error || !user) {
+  if (!user) {
     // Redirect to login if not authenticated
     redirect('/login')
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      {children}
-    </div>
+    <UserProvider initialUser={user}>
+      <div className="flex min-h-screen flex-col">
+        {children}
+      </div>
+    </UserProvider>
   )
 } 

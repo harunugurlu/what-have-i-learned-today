@@ -1,25 +1,15 @@
-import { createClient } from '@/utils/supabase/server'
+import { getCurrentUser } from '@/lib/actions'
 
 export default async function DashboardPage() {
-  const supabase = createClient()
-  
-  // Get the current user
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  // Get the user's profile from our database
-  const { data: profile } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', user?.id)
-    .single()
+  const user = await getCurrentUser()
 
   return (
     <div className="container py-8">
       <h1 className="mb-6 text-3xl font-bold">Dashboard</h1>
       <div className="mb-8 rounded-lg border p-6">
-        <h2 className="mb-4 text-xl font-semibold">Welcome, {profile?.username || 'User'}!</h2>
+        <h2 className="mb-4 text-xl font-semibold">Welcome, {user?.username || 'User'}!</h2>
         <p className="text-muted-foreground">
-          Your current streak: <span className="font-medium text-primary">{profile?.streak || 0} days</span>
+          Your current streak: <span className="font-medium text-primary">{user?.streak || 0} days</span>
         </p>
       </div>
       

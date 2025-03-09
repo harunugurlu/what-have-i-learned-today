@@ -1,25 +1,16 @@
-import { Button } from '@/components/ui/button'
-import { createClient } from '@/utils/supabase/server'
-import { LogOut } from 'lucide-react'
+'use client'
+
+import { UserProfile } from '@/components/molecules'
+import { useUser } from '@/components/molecules/user-provider'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const supabase = createClient()
-  
-  // Get the current user
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  // Get the user's profile from our database
-  const { data: profile } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', user?.id)
-    .single()
+  const { user } = useUser()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -32,20 +23,7 @@ export default async function DashboardLayout({
             </Link>
           </div>
           <nav className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">
-                {profile?.username || 'User'}
-              </span>
-              <span className="rounded-full bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
-                {profile?.streak || 0} day streak
-              </span>
-            </div>
-            <form action="/auth/signout" method="post">
-              <Button variant="ghost" size="icon" type="submit">
-                <LogOut className="h-5 w-5" />
-                <span className="sr-only">Sign out</span>
-              </Button>
-            </form>
+            <UserProfile user={user} />
           </nav>
         </div>
       </header>
