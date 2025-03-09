@@ -98,7 +98,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex justify-center">
@@ -137,6 +137,7 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                className="hover:cursor-text"
               />
             </div>
             <div className="grid gap-2">
@@ -144,7 +145,7 @@ export default function LoginPage() {
                 <Label htmlFor="password">Password</Label>
                 <Link
                   href="/forgot-password"
-                  className="text-xs font-medium text-primary underline underline-offset-4"
+                  className="text-xs font-medium text-primary underline underline-offset-4 hover:cursor-pointer"
                 >
                   Forgot password?
                 </Link>
@@ -157,9 +158,14 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                className="hover:cursor-text"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button 
+              type="submit" 
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 hover:cursor-pointer" 
+              disabled={isLoading}
+            >
               {isLoading ? 'Signing In...' : 'Sign In with Email'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -176,7 +182,7 @@ export default function LoginPage() {
               type="button"
               onClick={handleGoogleSignIn}
               disabled={isLoading}
-              className="flex items-center justify-center gap-2"
+              className="flex items-center justify-center gap-2 hover:cursor-pointer"
             >
               <Image src="/google-logo.svg" alt="Google Logo" width={20} height={20} />
               Sign in with Google
@@ -187,7 +193,7 @@ export default function LoginPage() {
           <p>By signing in, you agree to our Terms of Service and Privacy Policy.</p>
           <p>
             Don't have an account?{' '}
-            <Link href="/signup" className="font-medium text-primary underline underline-offset-4">
+            <Link href="/signup" className="font-medium text-primary underline underline-offset-4 hover:cursor-pointer">
               Sign up
             </Link>
           </p>

@@ -68,7 +68,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex justify-center">
@@ -102,6 +102,7 @@ export default function ResetPasswordPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                className="hover:cursor-text"
               />
             </div>
             <div className="grid gap-2">
@@ -114,9 +115,14 @@ export default function ResetPasswordPage() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
+                className="hover:cursor-text"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button 
+              type="submit" 
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 hover:cursor-pointer" 
+              disabled={isLoading}
+            >
               {isLoading ? 'Resetting Password...' : 'Reset Password'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

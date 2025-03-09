@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex justify-center">
@@ -86,9 +86,14 @@ export default function ForgotPasswordPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="hover:cursor-text"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button 
+              type="submit" 
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 hover:cursor-pointer" 
+              disabled={isLoading}
+            >
               {isLoading ? 'Sending Reset Link...' : 'Send Reset Link'}
             </Button>
           </CardContent>
@@ -96,7 +101,7 @@ export default function ForgotPasswordPage() {
         <CardFooter className="flex justify-center">
           <Link
             href="/login"
-            className="flex items-center text-sm font-medium text-primary underline underline-offset-4"
+            className="flex items-center text-sm font-medium text-primary underline underline-offset-4 hover:cursor-pointer"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to login

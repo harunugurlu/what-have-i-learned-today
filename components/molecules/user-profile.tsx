@@ -51,6 +51,7 @@ export function UserProfile({ user }: UserProfileProps) {
         size="icon"
         onClick={handleSignOut}
         disabled={isSigningOut}
+        className="hover:cursor-pointer"
       >
         <LogOut className="h-5 w-5" />
         <span className="sr-only">Sign out</span>

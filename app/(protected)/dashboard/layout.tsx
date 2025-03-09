@@ -14,8 +14,8 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b">
-        <div className="container flex h-16 items-center justify-between">
+      <header className="border-b bg-background">
+        <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2">
             <Link href="/dashboard" className="flex items-center gap-2">
               <Image src="/logo.svg" alt="Logo" width={32} height={32} />
@@ -23,16 +23,16 @@ export default function DashboardLayout({
             </Link>
           </div>
           <nav className="flex items-center gap-4">
-            <ThemeToggle />
             <UserProfile user={user} />
+            <ThemeToggle />
           </nav>
         </div>
       </header>
-      <main className="flex-1">
+      <main className="flex-1 bg-background">
         {children}
       </main>
-      <footer className="border-t py-6">
-        <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
+      <footer className="border-t bg-background">
+        <div className="container flex flex-col items-center justify-between gap-4 py-6 px-4 md:flex-row md:px-6">
           <p className="text-center text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} What Have I Learned Today. All rights reserved.
           </p>

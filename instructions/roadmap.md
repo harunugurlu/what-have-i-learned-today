@@ -121,3 +121,34 @@ Implemented a light + dark theme system, set up a consistent color palette, and 
 
 ### Questions
 - None at this time
+
+## Bug Fixes Before Step 5
+
+### Summary
+Fixed various UI and functionality issues before proceeding with Step 5.
+
+### Completed
+- Fixed authentication routing issues:
+  - Updated middleware to allow access to the signup route
+  - Added proper public route handling for all auth-related pages
+- Fixed dark theme issues:
+  - Added `bg-background` class to header, main, and footer elements
+  - Ensured text and border colors adapt properly to dark mode
+  - Fixed contrast issues for better readability
+- Improved UI consistency and usability:
+  - Enhanced button styling for better visual clarity
+  - Added `hover:cursor-pointer` to all clickable elements
+  - Replaced custom dropdown menu with shadcn's dropdown-menu component
+  - Added proper padding to navbar and footer
+  - Adjusted light mode to use a slightly more gray background
+  - Improved spacing and alignment in layouts
+  - Enhanced form input styling for better user experience
+
+### Next Steps
+- Proceed to Step 5: Main Page – Calendar Layout
+
+### Known Issues
+- None at this time
+
+### Questions
+- None at this time
