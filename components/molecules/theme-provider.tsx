@@ -8,6 +8,9 @@ type ThemeProviderProps = {
   children: React.ReactNode
   defaultTheme?: Theme
   storageKey?: string
+  attribute?: string
+  enableSystem?: boolean
+  disableTransitionOnChange?: boolean
 }
 
 type ThemeProviderState = {
@@ -26,6 +29,9 @@ export function ThemeProvider({
   children,
   defaultTheme = 'system',
   storageKey = 'ui-theme',
+  attribute = 'class',
+  enableSystem = true,
+  disableTransitionOnChange = false,
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme)
@@ -35,28 +41,83 @@ export function ThemeProvider({
     
     if (savedTheme) {
       setTheme(savedTheme)
-    } else if (defaultTheme === 'system') {
+    } else if (defaultTheme === 'system' && enableSystem) {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
         : 'light'
       setTheme(systemTheme)
     }
-  }, [defaultTheme, storageKey])
+  }, [defaultTheme, storageKey, enableSystem])
+
+  useEffect(() => {
+    const root = window.document.documentElement
+
+    if (disableTransitionOnChange) {
+      root.classList.add('disable-transitions')
+      
+      // Force a reflow
+      const _ = window.getComputedStyle(root).opacity
+      
+      // Remove the class after a short delay
+      const timeout = setTimeout(() => {
+        root.classList.remove('disable-transitions')
+      }, 0)
+      
+      return () => clearTimeout(timeout)
+    }
+  }, [theme, disableTransitionOnChange])
 
   useEffect(() => {
     const root = window.document.documentElement
 
     root.classList.remove('light', 'dark')
 
-    if (theme === 'system') {
+    if (theme === 'system' && enableSystem) {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
         : 'light'
       root.classList.add(systemTheme)
+      if (attribute === 'class') {
+        root.setAttribute(attribute, systemTheme)
+      } else {
+        root.setAttribute(attribute, `theme-${systemTheme}`)
+      }
     } else {
       root.classList.add(theme)
+      if (attribute === 'class') {
+        root.setAttribute(attribute, theme)
+      } else {
+        root.setAttribute(attribute, `theme-${theme}`)
+      }
     }
-  }, [theme])
+  }, [theme, attribute, enableSystem])
+
+  // Listen for system theme changes
+  useEffect(() => {
+    if (!enableSystem) return
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    
+    const handleChange = () => {
+      if (theme === 'system') {
+        const systemTheme = mediaQuery.matches ? 'dark' : 'light'
+        const root = window.document.documentElement
+        
+        root.classList.remove('light', 'dark')
+        root.classList.add(systemTheme)
+        
+        if (attribute === 'class') {
+          root.setAttribute(attribute, systemTheme)
+        } else {
+          root.setAttribute(attribute, `theme-${systemTheme}`)
+        }
+      }
+    }
+    
+    mediaQuery.addEventListener('change', handleChange)
+    
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [theme, attribute, enableSystem])
 
   const value = {
     theme,

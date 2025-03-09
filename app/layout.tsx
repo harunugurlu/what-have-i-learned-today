@@ -24,7 +24,12 @@ export default function RootLayout({
           inter.variable
         )}
       >
-        <ThemeProvider defaultTheme="system" storageKey="theme">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
       </body>
