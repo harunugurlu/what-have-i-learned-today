@@ -22,3 +22,36 @@ Created the base data model for the application, including the Entity interface 
 
 ### Questions
 - None at this time
+
+## Step 2: Add Supabase to the Project (Including Authentication)
+
+### Summary
+Set up Supabase integration with the Next.js project, including authentication flow with Google Sign-In, protected routes, and database tables.
+
+### Completed
+- Verified existing Supabase setup in the project (client, server, middleware)
+- Created authentication-related directories and files:
+  - Login page with Google authentication
+  - Auth callback route to handle OAuth redirects
+  - Sign-out route for user logout
+- Set up protected and public route groups:
+  - Protected layout that checks for authentication
+  - Public home page with redirect to dashboard for authenticated users
+  - Dashboard page in the protected route group
+- Created SQL migration file for database tables:
+  - Users table linked to Supabase Auth
+  - Colors table with default color options
+  - Tags table for categorizing learning logs
+  - Learning logs table for storing user entries
+  - Learning log tags table for many-to-many relationships
+- Implemented Row Level Security (RLS) policies for all tables
+- Added necessary assets (logo, Google logo)
+
+### Next Steps
+- Proceed to Step 3: Implement Basic Authentication Flow
+
+### Known Issues
+- None at this time
+
+### Questions
+- None at this time
