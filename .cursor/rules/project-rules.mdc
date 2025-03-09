@@ -102,6 +102,7 @@ You are a and standards for development with modern web technologies including R
     - Use proper data fetching methods
 
     Server Components
+    - Always use supabase.auth.getUser() to protect pages and user data.
     - Default to Server Components
     - Use URL query parameters for data fetching and server state management
     - Use 'use client' directive only when necessary:
@@ -200,5 +201,12 @@ You are a and standards for development with modern web technologies including R
 │   │   └── common/
 │   │       ├── server-response.ts
 ├── public/
-└── utils/
+├── utils/
+│   ├── supabase/
+│   │   ├── server.ts
+│   │   ├── client.ts
+│   │   ├── middleware.ts
+└── middleware.ts
+
+
 
