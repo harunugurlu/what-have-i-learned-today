@@ -90,3 +90,34 @@ Enhanced the authentication flow by adding reusable components, context provider
 
 ### Questions
 - None at this time
+
+## Step 4: UI & Design (Global)
+
+### Summary
+Implemented a light + dark theme system, set up a consistent color palette, and created shared layouts for different route groups.
+
+### Completed
+- Implemented a theme system with light, dark, and system options:
+  - Created a `ThemeProvider` component to manage theme state
+  - Created a `ThemeToggle` component to switch between themes
+  - Updated the root layout to include the theme provider
+- Set up a consistent color palette in the global CSS:
+  - Defined color variables for both light and dark themes
+  - Used a primary color of indigo (#4F46E5) for branding
+  - Ensured proper contrast ratios for accessibility
+- Created shared layouts for different route groups:
+  - Public layout for unauthenticated users
+  - Auth layout for login/signup pages
+  - Protected layout for authenticated users
+  - Dashboard layout for the main application
+- Added consistent header and footer components to all layouts
+- Ensured responsive design for all layouts
+
+### Next Steps
+- Proceed to Step 5: Main Page – Calendar Layout
+
+### Known Issues
+- None at this time
+
+### Questions
+- None at this time
