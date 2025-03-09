@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export default async function HomePage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Check if the user is authenticated
   const { data: { user } } = await supabase.auth.getUser()
